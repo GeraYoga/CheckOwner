@@ -79,10 +79,9 @@ namespace GY.CheckOwner
 
         private static async Task<KeyValuePair<string, string>> CheckPair(CSteamID steamP, CSteamID steamG)
         {
-            var player = UnturnedPlayer.FromCSteamID(steamP);
-            var isOnline = player != null;
+            var isOnline = PlayerTool.tryGetSteamPlayer(steamP.ToString(), out var player);
             var nameAndGroup = await RequestUtil.GetNameAndGroup(steamP, steamG);
-            return new KeyValuePair<string, string>(isOnline ? player.CharacterName : nameAndGroup.Key, nameAndGroup.Value);
+            return new KeyValuePair<string, string>(isOnline ? player.playerID.characterName : nameAndGroup.Key, nameAndGroup.Value);
         }
     }
     
